@@ -1,0 +1,7 @@
+import { DAY_END_MINUTES, DAY_START_MINUTES, SNAP_MINUTES } from "@/lib/timeline/geometry";
+import type { FixedSchedule } from "@/types/domain";
+export interface ScheduledTask { id: string; dailyTaskId: string; taskTemplateId: string; startMinutes: number; durationMinutes: number; }
+export type PlacementResult = { valid: true } | { valid: false; reason: "OUTSIDE_DAY" | "FIXED_SCHEDULE_COLLISION" | "TASK_COLLISION" };
+export const snapMinutes = (minutes: number) => Math.round(minutes / SNAP_MINUTES) * SNAP_MINUTES;
+export const hasOverlap = (aStart: number, aEnd: number, bStart: number, bEnd: number) => aStart < bEnd && bStart < aEnd;
+export function validatePlacement({ startMinutes, durationMinutes, fixedSchedules, scheduledTasks, ignoreScheduledTaskId }: { startMinutes: number; durationMinutes: number; fixedSchedules: Pick<FixedSchedule, "startMinutes" | "endMinutes">[]; scheduledTasks: ScheduledTask[]; ignoreScheduledTaskId?: string }): PlacementResult { const end = startMinutes + durationMinutes; if (startMinutes < DAY_START_MINUTES || end > DAY_END_MINUTES) return { valid: false, reason: "OUTSIDE_DAY" }; if (fixedSchedules.some((block) => hasOverlap(startMinutes, end, block.startMinutes, block.endMinutes))) return { valid: false, reason: "FIXED_SCHEDULE_COLLISION" }; if (scheduledTasks.some((task) => task.id !== ignoreScheduledTaskId && hasOverlap(startMinutes, end, task.startMinutes, task.startMinutes + task.durationMinutes))) return { valid: false, reason: "TASK_COLLISION" }; return { valid: true }; }
