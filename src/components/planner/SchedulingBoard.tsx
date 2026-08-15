@@ -29,6 +29,7 @@ import type { ScheduledTask } from "@/lib/scheduling/placement";
 import { getTasksForDate, type TodaysTask } from "@/lib/tasks/task-selector";
 import { getRemainingTasks } from "@/lib/tasks/task-pool-state";
 import { durationToTaskPoolWidth } from "@/lib/tasks/task-duration-geometry";
+import { useDragScrollLock } from "@/lib/interaction/use-drag-scroll-lock";
 import { DAILY_PIXELS_PER_MINUTE } from "@/lib/timeline/geometry";
 import type { FixedSchedule, TaskAssignment, TaskTemplate } from "@/types/domain";
 
@@ -131,6 +132,8 @@ export function SchedulingBoard({
   const [poolPreviewTask, setPoolPreviewTask] = useState<Pick<TaskTemplate, "icon" | "name"> | null>(null);
   const timelineTopRef = useRef<number | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
+
+  useDragScrollLock(activeSourceType !== null);
 
   useEffect(() => {
     queueMicrotask(() => setPlanned(loadScheduledTasks(childId, key)));

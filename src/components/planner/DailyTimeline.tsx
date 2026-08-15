@@ -57,7 +57,7 @@ function ScheduledBlock({ item, task }: { item: ScheduledTask; task?: TaskTempla
         ref={setNodeRef}
         {...attributes}
         {...listeners}
-        className={`h-full cursor-grab rounded-xl border border-[#c9dced] bg-[#edf6ff] px-2 text-xs font-bold active:cursor-grabbing ${isDragging ? "opacity-40" : ""}`}
+        className={`h-full touch-none cursor-grab rounded-xl border border-[#c9dced] bg-[#edf6ff] px-2 text-xs font-bold active:cursor-grabbing ${isDragging ? "opacity-40" : ""}`}
       >
         {task?.icon} {!short && task?.name}
       </div>
