@@ -6,6 +6,7 @@ import {
   DragMoveEvent,
   DragOverEvent,
   DragOverlay,
+  MeasuringStrategy,
   PointerSensor,
   useDraggable,
   useDroppable,
@@ -130,7 +131,7 @@ export function SchedulingBoard({
   const [activeSourceType, setActiveSourceType] = useState<DragSourceType>(null);
   const [poolPreview, setPoolPreview] = useState<PoolTimelinePreview | null>(null);
   const [poolPreviewTask, setPoolPreviewTask] = useState<Pick<TaskTemplate, "icon" | "name"> | null>(null);
-  const timelineTopRef = useRef<number | null>(null);
+  const timelineRectRef = useRef<{ readonly top: number } | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
 
   useDragScrollLock(activeSourceType !== null);
@@ -149,8 +150,10 @@ export function SchedulingBoard({
     setActiveSourceType(null);
     setPoolPreview(null);
     setPoolPreviewTask(null);
-    timelineTopRef.current = null;
+    timelineRectRef.current = null;
   };
+
+  const visualViewportOffsetTop = () => window.visualViewport?.offsetTop ?? 0;
 
   const updateTimelinePreview = (active: DragOverEvent["active"], timelineTop: number) => {
     const source = active.data.current;
@@ -170,6 +173,7 @@ export function SchedulingBoard({
         pixelsPerMinute: DAILY_PIXELS_PER_MINUTE,
         fixedSchedules: schedules,
         scheduledTasks: planned,
+        visualViewportOffsetTop: visualViewportOffsetTop(),
       }));
       setPoolPreviewTask(task);
       return;
@@ -185,6 +189,7 @@ export function SchedulingBoard({
         fixedSchedules: schedules,
         scheduledTasks: planned,
         ignoreScheduledTaskId: task.scheduledTaskId,
+        visualViewportOffsetTop: visualViewportOffsetTop(),
       }));
       setPoolPreviewTask(templates.find((template) => template.id === task.taskTemplateId) ?? null);
       return;
@@ -196,19 +201,19 @@ export function SchedulingBoard({
 
   const onDragOver = (event: DragOverEvent) => {
     if (event.over?.id !== "timeline") {
-      timelineTopRef.current = null;
+      timelineRectRef.current = null;
       setPoolPreview(null);
       setPoolPreviewTask(null);
       return;
     }
 
-    timelineTopRef.current = event.over.rect.top;
+    timelineRectRef.current = event.over.rect;
     updateTimelinePreview(event.active, event.over.rect.top);
   };
 
   const onDragMove = (event: DragMoveEvent) => {
-    if (timelineTopRef.current !== null) {
-      updateTimelinePreview(event.active, timelineTopRef.current);
+    if (timelineRectRef.current !== null) {
+      updateTimelinePreview(event.active, timelineRectRef.current.top);
     }
   };
 
@@ -241,6 +246,7 @@ export function SchedulingBoard({
         fixedSchedules: schedules,
         scheduledTasks: planned,
         ignoreScheduledTaskId: drag.scheduledTaskId,
+        visualViewportOffsetTop: visualViewportOffsetTop(),
       });
 
       if (preview.result.valid && preview.startMinutes !== drag.originalStartMinutes) {
@@ -265,6 +271,7 @@ export function SchedulingBoard({
       pixelsPerMinute: DAILY_PIXELS_PER_MINUTE,
       fixedSchedules: schedules,
       scheduledTasks: planned,
+      visualViewportOffsetTop: visualViewportOffsetTop(),
     });
 
     if (preview.result.valid) {
@@ -286,11 +293,13 @@ export function SchedulingBoard({
   return (
     <DndContext
       id="daily-planner-dnd"
+      measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
       sensors={sensors}
       onDragStart={(event) => {
         setOverlay(String(event.active.id));
         setPoolPreview(null);
         setPoolPreviewTask(null);
+        timelineRectRef.current = null;
         setActiveSourceType(event.active.data.current?.type === "SCHEDULED_TASK"
           ? "SCHEDULED_TASK"
           : "UNSCHEDULED_TASK");

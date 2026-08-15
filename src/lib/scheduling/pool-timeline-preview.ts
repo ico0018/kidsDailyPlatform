@@ -22,6 +22,8 @@ export function getPoolTimelinePreview({
   fixedSchedules,
   scheduledTasks,
   ignoreScheduledTaskId,
+  timelineScrollTop,
+  visualViewportOffsetTop,
 }: {
   translatedTop: number;
   timelineTop: number;
@@ -30,11 +32,14 @@ export function getPoolTimelinePreview({
   fixedSchedules: Pick<FixedSchedule, "startMinutes" | "endMinutes">[];
   scheduledTasks: ScheduledTask[];
   ignoreScheduledTaskId?: string;
+  timelineScrollTop?: number;
+  visualViewportOffsetTop?: number;
 }): PoolTimelinePreview {
   const startMinutes = getScheduledTaskCandidateStart(
     translatedTop,
     timelineTop,
     pixelsPerMinute,
+    { timelineScrollTop, visualViewportOffsetTop },
   );
 
   return {
