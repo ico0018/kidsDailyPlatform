@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { durationToHeight, minutesToY, yToMinutes } from "@/lib/timeline/geometry";
+import { durationToHeight, formatMinutes, minutesToY, yToMinutes } from "@/lib/timeline/geometry";
 
 describe("daily timeline geometry", () => {
   const pixelsPerMinute = 1.1;
@@ -11,4 +11,9 @@ describe("daily timeline geometry", () => {
   });
   it("converts coordinates back to minutes", () => expect(yToMinutes(132, pixelsPerMinute)).toBeCloseTo(480));
   it("keeps duration proportional", () => expect(durationToHeight(30, pixelsPerMinute)).toBeCloseTo(33));
+  it("formats each five-minute ruler label consistently", () => {
+    expect(formatMinutes(360)).toBe("6:00");
+    expect(formatMinutes(365)).toBe("6:05");
+    expect(formatMinutes(390)).toBe("6:30");
+  });
 });

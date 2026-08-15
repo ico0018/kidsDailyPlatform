@@ -2,6 +2,7 @@ export const DAY_START_MINUTES = 6 * 60;
 export const DAY_END_MINUTES = 21 * 60;
 export const DAY_DURATION_MINUTES = DAY_END_MINUTES - DAY_START_MINUTES;
 export const SNAP_MINUTES = 5;
+export const DAILY_PIXELS_PER_MINUTE = 2.8;
 
 export function minutesToPercent(minutes: number): number {
   return ((minutes - DAY_START_MINUTES) / DAY_DURATION_MINUTES) * 100;
@@ -21,4 +22,8 @@ export function yToMinutes(y: number, pixelsPerMinute: number): number {
 
 export function durationToHeight(durationMinutes: number, pixelsPerMinute: number): number {
   return durationMinutes * pixelsPerMinute;
+}
+
+export function formatMinutes(minutes: number): string {
+  return `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, "0")}`;
 }

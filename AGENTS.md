@@ -40,3 +40,7 @@ Help children independently plan and complete daily learning and life tasks. Par
 6. Reward redemption must create a ledger transaction.
 7. Core interactions must work; never replace them with static mockups.
 8. Do not begin a later phase before the user authorizes it.
+
+## Phase 4 Stability Rule
+
+The existing Task Pool → Timeline scheduling path is known-good. Do not rewrite its drag/drop architecture; extend the existing DndContext, timeline geometry, validation, repository, and scheduled-task rendering with minimal local changes. After each drag/drop sub-phase run focused tests, lint, typecheck, build, manually verify the requested interaction, then stop before the next interaction.
