@@ -31,6 +31,7 @@ import { getTasksForDate, type TodaysTask } from "@/lib/tasks/task-selector";
 import { getRemainingTasks } from "@/lib/tasks/task-pool-state";
 import { durationToTaskPoolWidth } from "@/lib/tasks/task-duration-geometry";
 import { useDragScrollLock } from "@/lib/interaction/use-drag-scroll-lock";
+import { useDragEdgeAutoScroll } from "@/lib/interaction/use-drag-edge-auto-scroll";
 import { DAILY_PIXELS_PER_MINUTE } from "@/lib/timeline/geometry";
 import type { FixedSchedule, TaskAssignment, TaskTemplate } from "@/types/domain";
 
@@ -44,6 +45,19 @@ type ScheduledDrag = {
 };
 
 type DragSourceType = "SCHEDULED_TASK" | "UNSCHEDULED_TASK" | null;
+
+function getEventClientY(event: Event): number | null {
+  if ("touches" in event) {
+    const touch = (event as TouchEvent).touches[0] ?? (event as TouchEvent).changedTouches[0];
+    return touch?.clientY ?? null;
+  }
+  return "clientY" in event ? (event as MouseEvent).clientY : null;
+}
+
+function isTouchActivator(event: Event): boolean {
+  return "touches" in event
+    || ("pointerType" in event && (event as PointerEvent).pointerType === "touch");
+}
 
 function DraggableTask({ task }: { task: TodaysTask }) {
   const { attributes, listeners, setNodeRef } = useDraggable({
@@ -89,7 +103,7 @@ function TaskPool({
   return (
     <aside
       ref={setNodeRef}
-      className={`rounded-[28px] border p-5 transition ${
+      className={`rounded-[28px] border p-5 transition md:sticky md:top-4 md:self-start md:max-h-[calc(100vh-2rem)] md:overflow-y-auto ${
         isScheduledTaskOverPool
           ? "border-[#be9bd7] bg-[#f7f0fc] shadow-[0_12px_30px_rgba(136,93,170,.18)]"
           : "border-[#f0dfcd] bg-[#fffaf3]"
@@ -132,9 +146,19 @@ export function SchedulingBoard({
   const [poolPreview, setPoolPreview] = useState<PoolTimelinePreview | null>(null);
   const [poolPreviewTask, setPoolPreviewTask] = useState<Pick<TaskTemplate, "icon" | "name"> | null>(null);
   const timelineRectRef = useRef<{ readonly top: number } | null>(null);
+  const activeDragRef = useRef<DragOverEvent["active"] | null>(null);
+  const pointerOffsetYRef = useRef<number | null>(null);
+  const pointerClientYRef = useRef<number | null>(null);
+  const refreshPreviewRef = useRef<() => void>(() => {});
+  const [isTouchDrag, setIsTouchDrag] = useState(false);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
 
   useDragScrollLock(activeSourceType !== null);
+  useDragEdgeAutoScroll({
+    enabled: activeSourceType !== null && isTouchDrag,
+    pointerClientYRef,
+    onAutoScroll: refreshPreviewRef,
+  });
 
   useEffect(() => {
     queueMicrotask(() => setPlanned(loadScheduledTasks(childId, key)));
@@ -151,6 +175,10 @@ export function SchedulingBoard({
     setPoolPreview(null);
     setPoolPreviewTask(null);
     timelineRectRef.current = null;
+    activeDragRef.current = null;
+    pointerOffsetYRef.current = null;
+    pointerClientYRef.current = null;
+    setIsTouchDrag(false);
   };
 
   const visualViewportOffsetTop = () => window.visualViewport?.offsetTop ?? 0;
@@ -212,10 +240,23 @@ export function SchedulingBoard({
   };
 
   const onDragMove = (event: DragMoveEvent) => {
+    activeDragRef.current = event.active;
+    const translatedTop = event.active.rect.current.translated?.top;
+    if (translatedTop !== null && translatedTop !== undefined && pointerOffsetYRef.current !== null) {
+      pointerClientYRef.current = translatedTop + pointerOffsetYRef.current;
+    }
     if (timelineRectRef.current !== null) {
       updateTimelinePreview(event.active, timelineRectRef.current.top);
     }
   };
+
+  useEffect(() => {
+    refreshPreviewRef.current = () => {
+      if (activeDragRef.current !== null && timelineRectRef.current !== null) {
+        updateTimelinePreview(activeDragRef.current, timelineRectRef.current.top);
+      }
+    };
+  });
 
   const onEnd = (event: DragEndEvent) => {
     const source = event.active.data.current;
@@ -300,6 +341,13 @@ export function SchedulingBoard({
         setPoolPreview(null);
         setPoolPreviewTask(null);
         timelineRectRef.current = null;
+        activeDragRef.current = event.active;
+        const clientY = getEventClientY(event.activatorEvent);
+        pointerOffsetYRef.current = clientY === null
+          ? null
+          : clientY - (event.active.rect.current.initial?.top ?? clientY);
+        pointerClientYRef.current = clientY;
+        setIsTouchDrag(isTouchActivator(event.activatorEvent));
         setActiveSourceType(event.active.data.current?.type === "SCHEDULED_TASK"
           ? "SCHEDULED_TASK"
           : "UNSCHEDULED_TASK");
@@ -309,7 +357,7 @@ export function SchedulingBoard({
       onDragEnd={onEnd}
       onDragCancel={clearDragState}
     >
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.7fr)_minmax(290px,.9fr)]">
+      <div className="grid gap-6 md:grid-cols-[minmax(0,1.7fr)_minmax(230px,.9fr)]">
         <DailyTimeline
           schedules={schedules}
           scheduledTasks={planned}

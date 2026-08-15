@@ -17,8 +17,6 @@ export function useDragScrollLock(isDragging: boolean) {
   useEffect(() => {
     if (!isDragging) return undefined;
 
-    const scrollX = window.scrollX;
-    const scrollY = window.scrollY;
     const html = document.documentElement;
     const body = document.body;
     const htmlStyles = snapshotStyles(html, ["overflow", "overscroll-behavior", "touch-action"]);
@@ -26,11 +24,6 @@ export function useDragScrollLock(isDragging: boolean) {
       "overflow",
       "overscroll-behavior",
       "touch-action",
-      "position",
-      "top",
-      "left",
-      "right",
-      "width",
     ]);
 
     html.style.setProperty("overflow", "hidden");
@@ -39,16 +32,13 @@ export function useDragScrollLock(isDragging: boolean) {
     body.style.setProperty("overflow", "hidden");
     body.style.setProperty("overscroll-behavior", "none");
     body.style.setProperty("touch-action", "none");
-    body.style.setProperty("position", "fixed");
-    body.style.setProperty("top", `-${scrollY}px`);
-    body.style.setProperty("left", `-${scrollX}px`);
-    body.style.setProperty("right", "0");
-    body.style.setProperty("width", "100%");
+    const preventTouchScroll = (event: TouchEvent) => event.preventDefault();
+    document.addEventListener("touchmove", preventTouchScroll, { passive: false });
 
     return () => {
       restoreStyles(html, htmlStyles);
       restoreStyles(body, bodyStyles);
-      window.scrollTo(scrollX, scrollY);
+      document.removeEventListener("touchmove", preventTouchScroll);
     };
   }, [isDragging]);
 }
