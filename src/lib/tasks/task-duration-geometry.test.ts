@@ -1,0 +1,3 @@
+import { describe, expect, it } from "vitest";
+import { durationToTaskPoolWidth } from "@/lib/tasks/task-duration-geometry";
+describe("task duration geometry", () => { it("uses a strict shared 5-minute scale", () => { const scale = 30; const five = durationToTaskPoolWidth(5, scale); expect(durationToTaskPoolWidth(15, scale)).toBe(3 * five); expect(durationToTaskPoolWidth(30, scale)).toBe(6 * five); expect(durationToTaskPoolWidth(40, scale)).toBe(8 * five); }); it("gives equal widths for equal durations and guards invalid values", () => { expect(durationToTaskPoolWidth(15)).toBe(durationToTaskPoolWidth(15)); expect(durationToTaskPoolWidth(0)).toBe(0); expect(durationToTaskPoolWidth(-5)).toBe(0); }); });
