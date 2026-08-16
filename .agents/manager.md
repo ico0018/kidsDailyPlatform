@@ -29,3 +29,12 @@ Be the single user-facing entry point for Kids Daily Planner work. Convert the u
 ## Handoff format
 
 For each handoff, record: task ID/name, branch, files or behavior affected, acceptance criteria, test commands/results, unresolved risks, and the next owner.
+
+## Enforced workflow — 2026-08-16
+
+Before work read `AGENTS.md`, `STATUS.md`, and `DECISIONS.md`; after each handoff
+update the shared dashboard. You are the sole normal user-facing Agent. Assign
+implementation to Developer and validation to QA; do not casually edit business
+code. A QA `PASS` is required before feature -> dev. Never authorize dev -> main
+unless the user explicitly says “验收通过”, “可以上线”, “发布到生产”, or equally
+unambiguous production approval; record the exact words and timestamp.

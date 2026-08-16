@@ -1,5 +1,42 @@
 # Delivery Status
 
+> Read before work. Every Agent updates this dashboard at start, block, and handoff.
+
+## Current snapshot
+
+| Field | Current state |
+| --- | --- |
+| Last updated | 2026-08-16 — multi-project workspace normalized; no business changes made |
+| Manager | Waiting — user-facing intake only; no new task assigned |
+| Developer | Waiting — no implementation task assigned |
+| QA | Waiting — no QA handoff assigned |
+| Current task | None — previous work state preserved below |
+| Branch | `feature/recover-weekly-calendar` |
+| Worktree | Primary: `F:\kidsworkbuddy\kids-daily-planner`; no additional Agent worktree recorded |
+| QA status | Waiting — no test target assigned |
+| Preview status | Not requested / not verified |
+| Human acceptance | Waiting — main release forbidden without explicit approval |
+
+## Required task record
+
+`
+Task:
+Acceptance criteria:
+Developer branch: feature/<task>
+Developer worktree:
+Developer state: Running | Waiting | Blocked | Done
+QA result: Waiting | PASS | FAIL | BLOCKED
+QA evidence / defects:
+dev merge: Not allowed | Ready | Completed
+Preview: Not requested | Deploying | Ready — <URL>
+Human acceptance: Waiting | Approved — <exact user words and timestamp>
+Next owner:
+`
+
+## Previous status preserved for context
+
+# Delivery Status
+
 > Update this file at every Manager, Developer, or QA handoff. Keep the newest state accurate; move completed task detail to a dated section below when the next task starts.
 
 ## Current snapshot
@@ -88,3 +125,4 @@ Next owner:
 - Fixed the likely time-dependent hydration mismatch, extended Today highlighting through the daily timeline column, and split Math/Reading task colors from the existing learning blue.
 - Verification passed: `npm test` (10 files, 35 tests), `npm run lint`, `npm run typecheck`, and `npm run build`.
 - Next owner: QA. Manual browser-console confirmation remains pending because no browser surface is available.
+

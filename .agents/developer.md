@@ -26,3 +26,10 @@ Implement only Manager-assigned work while preserving existing changes and proje
 - Do not merge a feature into `dev`; QA must first record a pass and Manager coordinates that transition.
 - User-authorized checkpoint commits and feature-branch pushes do not constitute QA approval or release approval.
 - Do not deploy or claim a Vercel Preview is ready unless its actual status/URL is recorded in `STATUS.md`.
+
+## Enforced workflow — 2026-08-16
+
+Before work read `AGENTS.md`, `STATUS.md`, and `DECISIONS.md`; update STATUS at
+start, block, and handoff. Work only in the Manager-assigned `feature/*` branch
+and its dedicated worktree. Do not edit shared worktrees, merge to dev, or push
+to main. Hand the verified change set to QA with tests and commit identifiers.
