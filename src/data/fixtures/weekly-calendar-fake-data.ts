@@ -3,7 +3,7 @@ import type { FixedSchedule } from "@/types/domain";
 
 export type WeeklyCalendarFakeTask = ScheduledTask & {
   weekday: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  colorCategory: "LEARNING" | "CREATIVE" | "MOVEMENT" | "FAMILY" | "FREE";
+  colorCategory: "LEARNING" | "MATH" | "READING" | "CREATIVE" | "MOVEMENT" | "FAMILY" | "FREE";
   title: string;
   icon: string;
   points: number;
@@ -30,11 +30,11 @@ export const weeklyCalendarFakeSchedules: FixedSchedule[] = [
 ];
 
 export const weeklyCalendarFakeTasks: WeeklyCalendarFakeTask[] = [
-  task("fake-mon-poem", 1, "CREATIVE", "Poem", "📜", 1020, 5, 5), task("fake-mon-raz", 1, "LEARNING", "RAZ", "📘", 1050, 15, 10), task("fake-mon-math", 1, "LEARNING", "Math", "🧮", 1080, 40, 20),
-  task("fake-tue-reading", 2, "LEARNING", "Reading", "📖", 990, 30, 15), task("fake-tue-exercise", 2, "MOVEMENT", "Exercise", "🏃", 1050, 30, 10),
-  task("fake-wed-raz", 3, "LEARNING", "RAZ", "📘", 1050, 15, 10), task("fake-wed-reading", 3, "LEARNING", "Reading", "📖", 1080, 30, 15),
-  task("fake-thu-poem", 4, "CREATIVE", "Poem", "📜", 780, 5, 5), task("fake-thu-raz", 4, "LEARNING", "RAZ", "📘", 800, 15, 10), task("fake-thu-math", 4, "LEARNING", "Math", "🧮", 930, 40, 20), task("fake-thu-reading", 4, "LEARNING", "Reading", "📖", 990, 30, 15),
+  task("fake-mon-poem", 1, "CREATIVE", "Poem", "📜", 1020, 5, 5), task("fake-mon-raz", 1, "LEARNING", "RAZ", "📘", 1050, 15, 10), task("fake-mon-math", 1, "MATH", "Math", "🧮", 1080, 40, 20),
+  task("fake-tue-reading", 2, "READING", "Reading", "📖", 990, 30, 15), task("fake-tue-exercise", 2, "MOVEMENT", "Exercise", "🏃", 1050, 30, 10),
+  task("fake-wed-raz", 3, "LEARNING", "RAZ", "📘", 1050, 15, 10), task("fake-wed-reading", 3, "READING", "Reading", "📖", 1080, 30, 15),
+  task("fake-thu-poem", 4, "CREATIVE", "Poem", "📜", 780, 5, 5), task("fake-thu-raz", 4, "LEARNING", "RAZ", "📘", 800, 15, 10), task("fake-thu-math", 4, "MATH", "Math", "🧮", 930, 40, 20), task("fake-thu-reading", 4, "READING", "Reading", "📖", 990, 30, 15),
   task("fake-fri-piano", 5, "CREATIVE", "Piano", "🎹", 960, 30, 15), task("fake-fri-free", 5, "FREE", "Free Time", "🌈", 1020, 60, 0),
   task("fake-sat-piano", 6, "CREATIVE", "Piano", "🎹", 675, 30, 15), task("fake-sat-outdoor", 6, "MOVEMENT", "Outdoor Time", "🚲", 810, 60, 10), task("fake-sat-raz", 6, "LEARNING", "RAZ", "📘", 900, 15, 10),
-  task("fake-sun-poem", 0, "CREATIVE", "Poem", "📜", 600, 5, 5), task("fake-sun-math", 0, "LEARNING", "Math", "🧮", 630, 40, 20), task("fake-sun-reading", 0, "LEARNING", "Reading", "📖", 720, 30, 15), task("fake-sun-free", 0, "FREE", "Free Time", "🌈", 1020, 60, 0),
+  task("fake-sun-poem", 0, "CREATIVE", "Poem", "📜", 600, 5, 5), task("fake-sun-math", 0, "MATH", "Math", "🧮", 630, 40, 20), task("fake-sun-reading", 0, "READING", "Reading", "📖", 720, 30, 15), task("fake-sun-free", 0, "FREE", "Free Time", "🌈", 1020, 60, 0),
 ];

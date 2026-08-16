@@ -6,9 +6,9 @@
 
 | Field | Current state |
 | --- | --- |
-| Last updated | 2026-08-17 — initial recovery checkpoint pushed; waiting for QA |
-| Manager | 🟢 Feature branch checkpoint is on GitHub; no merge to `dev` or `main` authorized |
-| Developer | 🟢 READY FOR QA — initial weekly-calendar recovery checkpoint verified |
+| Last updated | 2026-08-17 — Weekly Calendar UX correction verified; checkpoint ready for QA |
+| Manager | 🟢 UX correction checkpoint pending push; no merge to `dev` or `main` authorized |
+| Developer | 🟢 READY FOR QA — hydration-safe date initialization, full-day highlight, task color distinction |
 | QA | ⚪ Waiting for a scoped feature handoff |
 | Current task | Take over existing weekly-calendar development while preserving all uncommitted calendar and Agent-workspace files. |
 | Branch | `feature/recover-weekly-calendar` — checkpoint/push to this feature branch authorized; merge forbidden. |
@@ -28,9 +28,9 @@ Requested by: User.
 Scope: Preserve the existing full-week deterministic fixture, task rendering, and color hierarchy work. Do not alter Arrange scheduling/drag behavior or Agent-workspace files.
 Acceptance criteria: Seven varied fixture days render; fixed schedule context remains visually quiet; child tasks remain clearly distinguishable; lint, typecheck, tests, and build pass; QA receives a reviewable visual summary.
 Developer branch: feature/recover-weekly-calendar
-Developer state: READY FOR QA
+Developer state: READY FOR QA — Weekly Calendar UX correction
 QA result: NOT STARTED
-QA evidence / defects: Existing changes reviewed by Manager; no clearly unrelated changes found. Developer verification: npm test (35 tests), lint, typecheck, and build all pass on 2026-08-17.
+QA evidence / defects: User reported a local-page error, incomplete Today highlighting, and insufficient task color distinction. Browser console remains unavailable; replaced render-time date initialization with hydration-safe client initialization. Verification: npm test (35 tests), lint, typecheck, and build all pass on 2026-08-17.
 dev merge: NOT ALLOWED
 Preview: NOT REQUESTED
 Human acceptance: WAITING
@@ -82,3 +82,9 @@ Next owner:
 - Verification passed: `npm test` (10 files, 35 tests), `npm run lint`, `npm run typecheck`, and `npm run build`.
 - Checkpoint: `a70b884 feat: recover weekly calendar prototype`, pushed to `origin/feature/recover-weekly-calendar`.
 - Next owner: QA. The feature remains unmerged and is not a release candidate until QA records a result.
+
+### 2026-08-17 — Weekly Calendar UX correction ready for QA
+
+- Fixed the likely time-dependent hydration mismatch, extended Today highlighting through the daily timeline column, and split Math/Reading task colors from the existing learning blue.
+- Verification passed: `npm test` (10 files, 35 tests), `npm run lint`, `npm run typecheck`, and `npm run build`.
+- Next owner: QA. Manual browser-console confirmation remains pending because no browser surface is available.

@@ -3,6 +3,8 @@ import type { WeeklyCalendarFakeTask } from "@/data/fixtures/weekly-calendar-fak
 
 const taskColors: Record<WeeklyCalendarFakeTask["colorCategory"], string> = {
   LEARNING: "border-[#a8bedc] bg-[#e5effb] text-[#405a7d]",
+  MATH: "border-[#dfc48a] bg-[#fff1c9] text-[#76591e]",
+  READING: "border-[#a9d0cf] bg-[#e1f2f0] text-[#356a67]",
   CREATIVE: "border-[#cfb1d8] bg-[#f2e7f5] text-[#704c79]",
   MOVEMENT: "border-[#a9d2c4] bg-[#e3f3ed] text-[#3f7063]",
   FAMILY: "border-[#e3c49d] bg-[#fff0dc] text-[#805d36]",
