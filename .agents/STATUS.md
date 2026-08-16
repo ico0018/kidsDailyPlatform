@@ -6,8 +6,8 @@
 
 | Field | Current state |
 | --- | --- |
-| Last updated | 2026-08-17 — initial recovery checkpoint verified and ready for QA |
-| Manager | 🟢 Feature checkpoint pending push; no merge to `dev` or `main` authorized |
+| Last updated | 2026-08-17 — initial recovery checkpoint pushed; waiting for QA |
+| Manager | 🟢 Feature branch checkpoint is on GitHub; no merge to `dev` or `main` authorized |
 | Developer | 🟢 READY FOR QA — initial weekly-calendar recovery checkpoint verified |
 | QA | ⚪ Waiting for a scoped feature handoff |
 | Current task | Take over existing weekly-calendar development while preserving all uncommitted calendar and Agent-workspace files. |
@@ -77,7 +77,8 @@ Next owner:
 - This initial checkpoint contains all preserved Weekly Calendar and Agent-workspace changes.
 - No merge to `dev` or `main` is authorized until user verification and explicit approval.
 
-### 2026-08-17 — Developer recovery checkpoint ready for QA
+### 2026-08-17 — Developer recovery checkpoint pushed for QA
 
 - Verification passed: `npm test` (10 files, 35 tests), `npm run lint`, `npm run typecheck`, and `npm run build`.
+- Checkpoint: `a70b884 feat: recover weekly calendar prototype`, pushed to `origin/feature/recover-weekly-calendar`.
 - Next owner: QA. The feature remains unmerged and is not a release candidate until QA records a result.
