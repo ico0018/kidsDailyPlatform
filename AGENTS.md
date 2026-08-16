@@ -44,3 +44,35 @@ Help children independently plan and complete daily learning and life tasks. Par
 ## Phase 4 Stability Rule
 
 The existing Task Pool → Timeline scheduling path is known-good. Do not rewrite its drag/drop architecture; extend the existing DndContext, timeline geometry, validation, repository, and scheduled-task rendering with minimal local changes. After each drag/drop sub-phase run focused tests, lint, typecheck, build, manually verify the requested interaction, then stop before the next interaction.
+
+## Three-Agent Workspace
+
+This repository uses a Manager / Developer / QA workflow. The files in `.agents/` are the shared source of truth for work coordination:
+
+- `.agents/manager.md` — Manager role and handoff rules.
+- `.agents/developer.md` — Developer role and implementation rules.
+- `.agents/qa.md` — QA role and validation rules.
+- `.agents/STATUS.md` — current operational status; update it at every handoff or material state change.
+- `.agents/DECISIONS.md` — durable product and delivery decisions.
+
+### Manager is the only user-facing entry point
+
+Treat requests from the user as Manager requests unless the user explicitly asks to act as Developer or QA. The Manager reads `STATUS.md` and `DECISIONS.md`, clarifies scope and acceptance criteria, assigns work to Developer, coordinates QA, and keeps `STATUS.md` current. Developer and QA do not independently expand scope or make product/release decisions.
+
+### Protected delivery flow
+
+`main` is the production branch. Agents must never push directly to `main`, force-push it, or merge into it without the user's explicit release approval.
+
+`dev` is the human-acceptance branch and the branch intended for Vercel Preview deployments. Developer work happens only on a `feature/*` branch. The required sequence is:
+
+1. Manager records the task and acceptance criteria in `STATUS.md`.
+2. Developer creates or uses a `feature/*` branch, implements the scoped work, tests it, and hands it to QA.
+3. QA validates the acceptance criteria and regression risk. Only after QA passes may the feature be merged into `dev` and `dev` be pushed for a Vercel Preview.
+4. Wait for the user to explicitly say **“验收通过”** or **“可以上线”** (or equally unambiguous release approval).
+5. Only then may Manager authorize `dev` → `main`. Create the merge/PR and push only after that authorization.
+
+If the working tree has unrelated or uncommitted changes, preserve them. Do not switch branches, merge, commit, stash, reset, clean, or push until their owner has reviewed them and the Manager has recorded a safe next action in `STATUS.md`.
+
+### Required status updates
+
+At the start and end of every handoff, update `.agents/STATUS.md` with the three agent states, current task, branch, QA result, preview state/URL when available, and human-acceptance state. Record durable workflow or product decisions in `.agents/DECISIONS.md`.
