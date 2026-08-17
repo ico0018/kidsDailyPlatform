@@ -6,15 +6,15 @@
 
 | Field | Current state |
 | --- | --- |
-| Last updated | 2026-08-17 — Phase 4B points-ledger correction verified and ready for QA |
-| Manager | Coordinating Phase 4B |
-| Developer | Ready for QA — durable points award integration completed |
-| QA | Waiting — corrective handoff pending |
+| Last updated | 2026-08-17 — Phase 4B merged to dev; Vercel Preview push authorized |
+| Manager | Deploying Vercel Preview from dev; production remains forbidden |
+| Developer | Done — implementation checkpoints 97f1d62 and 65c7ab1 |
+| QA | PASS — 65c7ab1 independently verified |
 | Current task | Phase 4B daily execution panel: live plan strip, task modes, local ledger and photo check-in |
-| Branch | `feature/daily-execution-panel-impl` |
-| Worktree | Developer: `F:\kidsworkbuddy\kids-daily-planner\.worktrees\daily-execution-panel` |
-| QA status | Waiting — correction ready for verification |
-| Preview status | Not requested / not verified |
+| Branch | `dev` — Phase 4B merged from `feature/daily-execution-panel-impl` |
+| Worktree | Dev preview: `F:\kidsworkbuddy\kids-daily-planner\.worktrees\dev-preview` |
+| QA status | PASS — 65c7ab1 |
+| Preview status | Deploying — dev push authorized by user |
 | Human acceptance | Waiting — main release forbidden without explicit approval |
 
 ## Required task record
@@ -24,13 +24,13 @@ Task: Phase 4B daily execution panel
 Acceptance criteria: Planned task blocks open an execution view with a real-time line, tabs, timer/embed modes, RAZ wrong-answer record, offline photo check-in, and exactly-once points ledger entries.
 Developer branch: feature/daily-execution-panel-impl
 Developer worktree: F:\kidsworkbuddy\kids-daily-planner\.worktrees\daily-execution-panel
-Developer state: READY FOR QA — durable point award integration
-QA result: WAITING
-QA evidence / defects: QA FAIL on 97f1d62 corrected: local point transactions are persisted per child, rendered in the execution header balance, and prevented from duplicating by scheduled task id. Verification: npm test 13 files / 42 tests passed; npm run lint passed with one @next/next/no-img-element warning for local photo preview; npm run typecheck passed; npm run build passed. Manual browser interaction remains unavailable.
-dev merge: NOT ALLOWED
-Preview: NOT REQUESTED
+Developer state: DONE — feature merged to dev
+QA result: PASS — 65c7ab1
+QA evidence / defects: QA verified persistent task-completion transactions, visible balance update (235 → 245), and duplicate rejection. npm test (13 files, 42 tests), typecheck, build, and git diff --check pass; lint has one non-blocking local-photo-preview img warning.
+dev merge: COMPLETED — user-authorized on 2026-08-17
+Preview: DEPLOYING — dev push authorized by user
 Human acceptance: WAITING
-Next owner: QA
+Next owner: Manager — push dev, capture Vercel Preview URL, wait for user acceptance
 `
 
 ## Previous status preserved for context
