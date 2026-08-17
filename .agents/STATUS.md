@@ -6,15 +6,15 @@
 
 | Field | Current state |
 | --- | --- |
-| Last updated | 2026-08-17 — Phase 4B merged to dev; Vercel Preview push authorized |
-| Manager | Deploying Vercel Preview from dev; production remains forbidden |
+| Last updated | 2026-08-17 — Phase 4B pushed to origin/dev; awaiting Vercel Preview status |
+| Manager | Waiting for Vercel Preview from dev; production remains forbidden |
 | Developer | Done — implementation checkpoints 97f1d62 and 65c7ab1 |
 | QA | PASS — 65c7ab1 independently verified |
 | Current task | Phase 4B daily execution panel: live plan strip, task modes, local ledger and photo check-in |
 | Branch | `dev` — Phase 4B merged from `feature/daily-execution-panel-impl` |
 | Worktree | Dev preview: `F:\kidsworkbuddy\kids-daily-planner\.worktrees\dev-preview` |
 | QA status | PASS — 65c7ab1 |
-| Preview status | Deploying — dev push authorized by user |
+| Preview status | Submitted — `dev` pushed to `origin`; Vercel URL unavailable from this environment |
 | Human acceptance | Waiting — main release forbidden without explicit approval |
 
 ## Required task record
@@ -28,7 +28,7 @@ Developer state: DONE — feature merged to dev
 QA result: PASS — 65c7ab1
 QA evidence / defects: QA verified persistent task-completion transactions, visible balance update (235 → 245), and duplicate rejection. npm test (13 files, 42 tests), typecheck, build, and git diff --check pass; lint has one non-blocking local-photo-preview img warning.
 dev merge: COMPLETED — user-authorized on 2026-08-17
-Preview: DEPLOYING — dev push authorized by user
+Preview: SUBMITTED — `dev` pushed to origin; Vercel URL unavailable from this environment
 Human acceptance: WAITING
 Next owner: Manager — push dev, capture Vercel Preview URL, wait for user acceptance
 `
