@@ -6,15 +6,15 @@
 
 | Field | Current state |
 | --- | --- |
-| Last updated | 2026-08-17 — Phase 4B merged to main; production push authorized and pending |
-| Manager | Releasing production — main merge complete, push pending |
+| Last updated | 2026-08-17 — Phase 4B production release pushed to origin/main |
+| Manager | Complete — production release pushed; future bugs are user-owned follow-up work |
 | Developer | Done — implementation checkpoints 97f1d62 and 65c7ab1 |
 | QA | PASS — 65c7ab1 independently verified |
 | Current task | Phase 4B daily execution panel: live plan strip, task modes, local ledger and photo check-in |
 | Branch | `main` — merged from `dev` for production release |
 | Worktree | Main release: `F:\kidsworkbuddy\kids-daily-planner\.worktrees\main-release` |
 | QA status | PASS — 65c7ab1 |
-| Preview status | Submitted — `dev` pushed to origin; Vercel URL unavailable from this environment |
+| Preview status | Production trigger submitted — `main` pushed to origin; Vercel URL unavailable from this environment |
 | Human acceptance | Approved — “合并到main吧，基本功能实现了，后续小bug我自己再改” on 2026-08-17 |
 
 ## Required task record
@@ -28,9 +28,9 @@ Developer state: DONE — feature merged to dev
 QA result: PASS — 65c7ab1
 QA evidence / defects: QA verified persistent task-completion transactions, visible balance update (235 → 245), and duplicate rejection. npm test (13 files, 42 tests), typecheck, build, and git diff --check pass; lint has one non-blocking local-photo-preview img warning.
 dev merge: COMPLETED — user-authorized on 2026-08-17
-Preview: SUBMITTED — `dev` pushed to origin; Vercel URL unavailable from this environment
+Preview: PRODUCTION TRIGGER SUBMITTED — `main` pushed to origin; Vercel URL unavailable from this environment
 Human acceptance: APPROVED — “合并到main吧，基本功能实现了，后续小bug我自己再改” on 2026-08-17
-Next owner: Manager — push main production release
+Next owner: User — future bug fixes or next phase
 `
 
 ## Previous status preserved for context
