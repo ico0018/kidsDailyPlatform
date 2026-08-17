@@ -7,3 +7,5 @@ export interface TaskTemplate { id: string; name: string; icon: string; descript
 export interface TaskAssignment { id: string; childId: string; taskTemplateId: string; weekdays: Weekday[]; }
 export interface FixedSchedule { id: string; childId: string; title: string; weekdays: Weekday[]; startMinutes: number; endMinutes: number; category: FixedScheduleCategory; }
 export interface Reward { id: string; name: string; emoji: string; description: string; costPoints: number; active: boolean; }
+export type PointTransactionType = "TASK_COMPLETION" | "REWARD_REDEMPTION";
+export interface PointTransaction { id: string; childId: string; type: PointTransactionType; points: number; sourceId: string; createdAt: string; }

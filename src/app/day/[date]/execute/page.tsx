@@ -7,5 +7,5 @@ export default async function ExecuteDayPage({ params }: { params: Promise<{ dat
   const { date: dateValue } = await params;
   const date = parseLocalDate(dateValue);
   if (!date) return <main className="grid min-h-screen place-items-center"><Link href="/">Back to My Week</Link></main>;
-  return <DailyExecutionPanel date={date} childId={demoChild.id} templates={demoTasks} />;
+  return <DailyExecutionPanel date={date} childId={demoChild.id} templates={demoTasks} startingPoints={demoChild.totalPoints} />;
 }

@@ -6,14 +6,14 @@
 
 | Field | Current state |
 | --- | --- |
-| Last updated | 2026-08-17 — Phase 4B implementation verified and ready for QA |
+| Last updated | 2026-08-17 — Phase 4B points-ledger correction verified and ready for QA |
 | Manager | Coordinating Phase 4B |
-| Developer | Ready for QA — daily execution panel implemented and verified |
-| QA | Waiting — scoped handoff pending |
+| Developer | Ready for QA — durable points award integration completed |
+| QA | Waiting — corrective handoff pending |
 | Current task | Phase 4B daily execution panel: live plan strip, task modes, local ledger and photo check-in |
 | Branch | `feature/daily-execution-panel-impl` |
 | Worktree | Developer: `F:\kidsworkbuddy\kids-daily-planner\.worktrees\daily-execution-panel` |
-| QA status | Waiting — test target ready |
+| QA status | Waiting — correction ready for verification |
 | Preview status | Not requested / not verified |
 | Human acceptance | Waiting — main release forbidden without explicit approval |
 
@@ -24,9 +24,9 @@ Task: Phase 4B daily execution panel
 Acceptance criteria: Planned task blocks open an execution view with a real-time line, tabs, timer/embed modes, RAZ wrong-answer record, offline photo check-in, and exactly-once points ledger entries.
 Developer branch: feature/daily-execution-panel-impl
 Developer worktree: F:\kidsworkbuddy\kids-daily-planner\.worktrees\daily-execution-panel
-Developer state: READY FOR QA
+Developer state: READY FOR QA — durable point award integration
 QA result: WAITING
-QA evidence / defects: npm test: 12 files / 40 tests passed; npm run lint: passed with one existing-style image optimization warning for the local photo preview; npm run typecheck: passed; npm run build: passed.
+QA evidence / defects: QA FAIL on 97f1d62 corrected: local point transactions are persisted per child, rendered in the execution header balance, and prevented from duplicating by scheduled task id. Verification: npm test 13 files / 42 tests passed; npm run lint passed with one @next/next/no-img-element warning for local photo preview; npm run typecheck passed; npm run build passed. Manual browser interaction remains unavailable.
 dev merge: NOT ALLOWED
 Preview: NOT REQUESTED
 Human acceptance: WAITING
