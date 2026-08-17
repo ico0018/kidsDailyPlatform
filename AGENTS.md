@@ -44,3 +44,71 @@ Help children independently plan and complete daily learning and life tasks. Par
 ## Phase 4 Stability Rule
 
 The existing Task Pool → Timeline scheduling path is known-good. Do not rewrite its drag/drop architecture; extend the existing DndContext, timeline geometry, validation, repository, and scheduled-task rendering with minimal local changes. After each drag/drop sub-phase run focused tests, lint, typecheck, build, manually verify the requested interaction, then stop before the next interaction.
+
+## Three-Agent Workspace
+
+This repository uses a Manager / Developer / QA workflow. The files in `.agents/` are the shared source of truth for work coordination:
+
+- `.agents/manager.md` — Manager role and handoff rules.
+- `.agents/developer.md` — Developer role and implementation rules.
+- `.agents/qa.md` — QA role and validation rules.
+- `.agents/STATUS.md` — current operational status; update it at every handoff or material state change.
+- `.agents/DECISIONS.md` — durable product and delivery decisions.
+
+### Manager is the only user-facing entry point
+
+Treat requests from the user as Manager requests unless the user explicitly asks to act as Developer or QA. The Manager reads `STATUS.md` and `DECISIONS.md`, clarifies scope and acceptance criteria, assigns work to Developer, coordinates QA, and keeps `STATUS.md` current. Developer and QA do not independently expand scope or make product/release decisions.
+
+### Protected delivery flow
+
+`main` is the production branch. Agents must never push directly to `main`, force-push it, or merge into it without the user's explicit release approval.
+
+`dev` is the human-acceptance branch and the branch intended for Vercel Preview deployments. Developer work happens only on a `feature/*` branch. The required sequence is:
+
+1. Manager records the task and acceptance criteria in `STATUS.md`.
+2. Developer creates or uses a `feature/*` branch, implements the scoped work, tests it, and hands it to QA.
+3. QA validates the acceptance criteria and regression risk. Only after QA passes may the feature be merged into `dev` and `dev` be pushed for a Vercel Preview.
+4. Wait for the user to explicitly say **“验收通过”** or **“可以上线”** (or equally unambiguous release approval).
+5. Only then may Manager authorize `dev` → `main`. Create the merge/PR and push only after that authorization.
+
+If the working tree has unrelated or uncommitted changes, preserve them. Do not switch branches, merge, commit, stash, reset, clean, or push until their owner has reviewed them and the Manager has recorded a safe next action in `STATUS.md`.
+
+### Required status updates
+
+At the start and end of every handoff, update `.agents/STATUS.md` with the three agent states, current task, branch, QA result, preview state/URL when available, and human-acceptance state. Record durable workflow or product decisions in `.agents/DECISIONS.md`.
+
+## Codex Agent Delivery Workflow (2026-08-16)
+
+The user normally talks only to **Manager**. Before any work, every Agent must
+read this file, `.agents/STATUS.md`, and `.agents/DECISIONS.md`; after any
+material action or handoff, it must update `STATUS.md`.
+
+### Roles
+
+- **Manager:** user-facing intake, scope and acceptance criteria, delegation,
+  status, QA coordination, and release-gate enforcement. Manager does not make
+  arbitrary business-code changes.
+- **Developer:** implements only Manager-assigned scope, only on `feature/*`.
+- **QA:** independently tests and reports `PASS`, `FAIL`, or `BLOCKED`; QA does
+  not implement, merge, deploy, or authorize release.
+
+### Git and release gates
+
+- `main` is production. No Agent may directly push, force-push, or merge to it.
+- `dev` is the integration, human-acceptance, and Vercel Preview branch.
+- Only QA `PASS` permits `feature/*` to enter `dev`; then `dev` may be pushed
+  for a Vercel Preview.
+- Only the user's explicit words **“验收通过”**, **“可以上线”**, **“发布到生产”**,
+  or an equally unambiguous release approval may authorize `dev` -> `main`.
+  “看起来可以”, “继续”, or similar wording is not production approval.
+- Preserve unrelated changes. Never reset, clean, stash, switch branches,
+  commit, merge, or push around a dirty tree without a Manager-recorded safe
+  plan.
+
+### Parallel worktrees
+
+Use one `feature/<task>` branch and one separate Git worktree per active
+Developer task. Never have two Agents edit the same worktree. Manager records
+each task, worktree path, and branch in `STATUS.md`; QA tests the exact feature
+branch/commit. Remove a worktree only after merge/abandonment is recorded and
+the user-owned files are confirmed safe.
