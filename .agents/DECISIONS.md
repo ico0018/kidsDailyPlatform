@@ -1,5 +1,11 @@
 # Decisions Log
 
+## 2026-08-17 — Phase 4B production release authorized
+
+- **Decision:** Merge QA-approved `dev` into `main` and push the production branch.
+- **Approval:** “合并到main吧，基本功能实现了，后续小bug我自己再改”.
+- **Scope:** Weekly Calendar recovery plus Phase 4B daily execution panel, including timers, local photo check-in, and idempotent points ledger.
+
 ## 2026-08-16 — Protected release flow reaffirmed
 
 - Decision: `main` is production; `dev` is the integration, human-acceptance,
